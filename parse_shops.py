@@ -1,15 +1,19 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.firefox.service import Service
-from webdriver_manager.firefox import GeckoDriverManager
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 import time
 from bs4 import BeautifulSoup as soup
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import re
 
-driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()))
-nums = [i for i in range(1, 133)]
+
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+url = 'https://tcshops.ru/gorod/moskva/'
+driver.get(url)
+time.sleep(5)
+
 dictionary_ultra_districts = {1 :"СЗАО", 4 : "ЦАО",  5 : "CAO", 6 : "СВАО", 7 : "ВАО", 8 : "ЮВАО", 9 : "ЮАО", 10 : "ЮЗАО",11 : "ЗАО"}
 url = 'https://www.cian.ru/cat.php?conditioner=1&currency=2&deal_type=rent&demolished_in_moscow_programm=0&district[0]=23&engine_version=2&house_material[0]=1&include_new_moscow=0&maxprice=100000&offer_type=flat&only_flat=1&room2=1&room3=1&sort=total_price_desc&type=4'
 for key in dictionary_ultra_districts:
@@ -41,9 +45,3 @@ for key in dictionary_ultra_districts:
     button = driver.find_element(By.XPATH, "//span[@class='_25d45facb5--text--V2xLI' and text()='Продолжить']")
     button.click()
     time.sleep(10)
-
-'''pattern = r"в районе\s+\b([^\s]+)\b\s+на"
-district_element = driver.find_element(By.XPATH, "//h1[@class='_93444fe79c--color_text-primary-default--vSRPB _93444fe79c--lineHeight_36px--K6dvk _93444fe79c--fontWeight_bold--BbhnX _93444fe79c--fontSize_28px--P1gR4 _93444fe79c--display_block--KYb25 _93444fe79c--text--b2YS3 _93444fe79c--text_letterSpacing__normal--yhcXb']")
-district_name = district_element.text
-extracted_district_name = str(re.search(pattern, district_name).group())
-print(extracted_district_name)'''
